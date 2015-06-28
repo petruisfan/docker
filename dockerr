@@ -1,0 +1,15 @@
+#!/bin/bash
+
+case "$1" in
+    "node")
+        docker run -it --rm -P -v $(pwd):/app -u=petru -w /app petruisfan/node:1.0 /bin/bash;;
+    "nginx")
+        #
+        # Run a on-premise nginx app that will server the $SRC folder
+        #
+        docker run --rm -p 80:80 -v $(pwd):/usr/share/nginx/html nginx:1.9;;
+    *)
+        echo "no such command"
+        exit 1;;
+esac
+
