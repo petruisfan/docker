@@ -1,6 +1,9 @@
-FROM ruby:2.0
+FROM debian:wheezy
 
 ENV USER petru
+
+RUN apt-get update
+RUN apt-get install -y sudo adduser ruby ruby-dev build-essential
 
 RUN addgroup -gid 1000 $USER \
     && adduser --uid 1000 --gid 1000 --disabled-password --gecos '' $USER \
