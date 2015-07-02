@@ -7,7 +7,7 @@ RUN apt-get update && apt-get install -y \
         bzip2 \
         libfreetype6 libfreetype6-dev libfontconfig1 libfontconfig1-dev \
         build-essential \
-        man
+        man tmux 
 
 ENV NODE_VERSION 0.10.35
 ENV NPM_VERSION 2.1.16

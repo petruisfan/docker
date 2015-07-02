@@ -2,7 +2,7 @@
 
 case "$1" in
     "node")
-        docker run -it --rm -P -v $(pwd):/app -u=petru -w /app petruisfan/node:1.0 /bin/bash;;
+        docker run -it --rm -P -v $(pwd):/app -u=petru -w /app petruisfan/node:1.1 /bin/bash;;
     "ruby")
         docker run -it --rm -P -v $(pwd):/app -u=petru -w /app petruisfan/ruby:1.0 /bin/bash;;
     "nginx")
