@@ -2,14 +2,16 @@
 
 case "$1" in
     "node")
-        docker run -it --rm -P -v $(pwd):/app -u=petru -w /app petruisfan/node:1.1 /bin/bash;;
+        docker run -it --rm --name node-box   -P -v $(pwd):/app -u=petru -w /app petruisfan/node:1.1 /bin/bash;;
     "ruby")
-        docker run -it --rm -P -v $(pwd):/app -u=petru -w /app petruisfan/ruby:1.0 /bin/bash;;
+        docker run -it --rm --name ruby-box   -P -v $(pwd):/app -u=petru -w /app petruisfan/ruby:1.0 /bin/bash;;
     "nginx")
         #
         # Run a on-premise nginx app that will server the current folder
         #
-        docker run --rm -p 80:80 -v $(pwd):/usr/share/nginx/html nginx:1.9;;
+        docker run     --rm --name nginx-box -p 80:80 -v $(pwd):/usr/share/nginx/html nginx:1.9;;
+    "ionic")
+        docker run -it --rm --name ionic-box -p 8100:8100 -p 35729:35729 -u=petru -v $(pwd):/code -w /code petruisfan/ionic:0.1 bash;;
     *)
         echo "no such command"
         exit 1;;
