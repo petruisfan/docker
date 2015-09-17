@@ -11,7 +11,16 @@ case "$1" in
         #
         docker run     --rm --name nginx-box -p 80:80 -v $(pwd):/usr/share/nginx/html nginx:1.9;;
     "ionic")
-        docker run -it --rm --name ionic-box -p 8100:8100 -p 35729:35729 -u=petru -v $(pwd):/code -w /code petruisfan/ionic:0.1 bash;;
+        docker run -it --rm \
+            --name ionic-box \
+            -p 8100:8100 \
+            -p 35729:35729 \
+            -u=petru \
+            -v $(pwd):/code \
+            -w /code \
+            --privileged -v /dev/bus/usb:/dev/bus/usb \
+            petruisfan/ionic:0.2 bash
+        ;;
     *)
         echo "no such command"
         exit 1;;
