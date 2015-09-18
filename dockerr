@@ -1,5 +1,14 @@
 #!/bin/bash
 
+function printHelp() {
+    echo "How to use: ${0} <cmd>"
+    echo "Where cmd could be: "
+    echo "  node"
+    echo "  ruby"
+    echo "  nginx"
+    echo "  ionic"
+}
+
 case "$1" in
     "node")
         docker run -it --rm --name node-box   -P -v $(pwd):/app -u=petru -w /app petruisfan/node:1.1 /bin/bash;;
@@ -22,7 +31,8 @@ case "$1" in
             petruisfan/ionic:0.2 bash
         ;;
     *)
-        echo "no such command"
+        echo "error: No such command"
+        printHelp
         exit 1;;
 esac
 
