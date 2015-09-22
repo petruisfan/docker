@@ -27,8 +27,21 @@ case "$1" in
             -u=petru \
             -v $(pwd):/code \
             -w /code \
+            -e DISPLAY=$DISPLAY \
+            -v /tmp/.X11-unix:/tmp/.X11-unix \
             --privileged -v /dev/bus/usb:/dev/bus/usb \
-            petruisfan/ionic:0.2 bash
+            petruisfan/ionic:0.3 bash
+        ;;
+    "is")
+        docker run -it --rm \
+            --name ionic-box \
+            -p 8100:8100 \
+            -p 35729:35729 \
+            -u=petru \
+            -v $(pwd):/code \
+            -w /code \
+            --privileged -v /dev/bus/usb:/dev/bus/usb \
+            petruisfan/ionic:0.2
         ;;
     *)
         echo "error: No such command"
