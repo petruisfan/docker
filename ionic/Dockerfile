@@ -33,7 +33,7 @@ EXPOSE 8100 35729
 ENV DEBIAN_FRONTEND noninteractive
 # install python-software-properties (so you can do add-apt-repository)
 RUN apt-get update \
-    && apt-get install -y -q python-software-properties software-properties-common 
+    && apt-get install -y -q python-software-properties software-properties-common \
     && apt-get clean
 
 # install oracle java from PPA
@@ -55,22 +55,24 @@ RUN cd /opt \
     && tar xzvf android-sdk.tgz \
     && rm -f android-sdk.tgz
 
+# Setup environment
+ENV ANDROID_HOME /opt/android-sdk-linux
+ENV PATH ${PATH}:${ANDROID_HOME}/tools:${ANDROID_HOME}/platform-tools
+
 # Install sdk elements
 COPY tools /opt/tools
-
-# Setup environment
-ENV ANDROID_HOME=/opt/android-sdk-linux \
-    PATH=$PATH:$ANDROID_HOME/tools:$ANDROID_HOME/platform-tools:/opt/tools
+ENV PATH ${PATH}:/opt/tools
 
 RUN echo ANDROID_HOME="$ANDROID_HOME" >> /etc/environment
 
-RUN ["/opt/tools/android-accept-licenses.sh", "$ANDROID_HOME/tools/android update sdk --all --no-ui --filter platform-tools,tools,build-tools-21.1.2,android-17,addon-google_apis_x86-google-19,extra-android-support,extra-android-m2repository,extra-google-m2repository,sys-img-x86-android-21"]
+RUN ["/opt/tools/android-accept-licenses.sh", "android update sdk --all --no-ui --filter platform-tools,tools,build-tools-21.1.2,android-17,android-22,addon-google_apis_x86-google-19,extra-android-support,extra-android-m2repository,extra-google-m2repository,sys-img-x86-android-21"]
 
 
 RUN addgroup -gid 1000 petru \
     && adduser --uid 1000 --gid 1000 --disabled-password --gecos '' petru \
     && adduser petru sudo \
-    && echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
+    && echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers \
+    && chown -R 1000:1000 $ANDROID_HOME
 
 RUN echo "alias ll='ls -la --color=auto'" >> /home/petru/.bashrc
 RUN echo "alias ..='cd ..'" >> /home/petru/.bashrc
