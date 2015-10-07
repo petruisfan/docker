@@ -1,17 +1,57 @@
 #!/bin/bash
 
+IONIC_VERSION='0.4'
+NODE_VERSION='1.1'
+RUBY_VERSION='1.0'
+NGINX_VERSION='1.9'
+
+function printHelp() {
+    echo "How to use: ${0} <cmd>"
+    echo "Where cmd could be: "
+    echo "  node    - node bash"
+    echo "  ruby    - ruby bash"
+    echo "  nginx   - web server on premise"
+    echo "  ionic   - ionic bash"
+    echo "  is      - ionic server"
+}
+
 case "$1" in
     "node")
-        docker run -it --rm -P -v $(pwd):/app -u=petru -w /app petruisfan/node:1.1 /bin/bash;;
+        docker run -it --rm --name node-box   -P -v $(pwd):/app -u=petru -w /app petruisfan/node:$NODE_VERSION /bin/bash;;
     "ruby")
-        docker run -it --rm -P -v $(pwd):/app -u=petru -w /app petruisfan/ruby:1.0 /bin/bash;;
+        docker run -it --rm --name ruby-box   -P -v $(pwd):/app -u=petru -w /app petruisfan/ruby:$RUBY_VERSION /bin/bash;;
     "nginx")
         #
         # Run a on-premise nginx app that will server the current folder
         #
-        docker run --rm -p 80:80 -v $(pwd):/usr/share/nginx/html nginx:1.9;;
+        docker run     --rm --name nginx-box -p 80:80 -v $(pwd):/usr/share/nginx/html nginx:$NGINX_VERSION;;
+    "ionic")
+        docker run -it --rm \
+            --name ionic-box \
+            -p 8100:8100 \
+            -p 35729:35729 \
+            -u=petru \
+            -v $(pwd):/code \
+            -w /code \
+            -e DISPLAY=$DISPLAY \
+            -v /tmp/.X11-unix:/tmp/.X11-unix \
+            --privileged -v /dev/bus/usb:/dev/bus/usb \
+            petruisfan/ionic:$IONIC_VERSION bash
+        ;;
+    "is")
+        docker run -it --rm \
+            --name ionic-box \
+            -p 8100:8100 \
+            -p 35729:35729 \
+            -u=petru \
+            -v $(pwd):/code \
+            -w /code \
+            --privileged -v /dev/bus/usb:/dev/bus/usb \
+            petruisfan/ionic:$IONIC_VERSION
+        ;;
     *)
-        echo "no such command"
+        echo "error: No such command"
+        printHelp
         exit 1;;
 esac
 
