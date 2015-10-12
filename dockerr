@@ -26,11 +26,12 @@ case "$1" in
         #
         docker run     --rm --name nginx-box -p 80:80 -v $(pwd):/usr/share/nginx/html nginx:$NGINX_VERSION;;
     "ionic")
+        #--net host \
         docker run -it --rm \
             --name ionic-box \
+            -u=petru \
             -p 8100:8100 \
             -p 35729:35729 \
-            -u=petru \
             -v $(pwd):/code \
             -w /code \
             -e DISPLAY=$DISPLAY \
