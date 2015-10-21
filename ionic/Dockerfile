@@ -10,7 +10,7 @@ RUN apt-get update &&  \
 
 ENV NODE_VERSION=0.12.7 \
     NPM_VERSION=2.14.1 \
-    IONIC_VERSION=1.6.4 \
+    IONIC_VERSION=1.7.7 \
     BOWER_VERSION=1.5.2 \
     CORDOVA_VERSION=5.3.1 \
     GRUNT_VERSION=0.1.13 \
@@ -68,14 +68,14 @@ RUN echo ANDROID_HOME="$ANDROID_HOME" >> /etc/environment
 RUN ["/opt/tools/android-accept-licenses.sh", "android update sdk --all --no-ui --filter platform-tools,tools,build-tools-21.1.2,android-17,android-22,addon-google_apis_x86-google-19,extra-android-support,extra-android-m2repository,extra-google-m2repository,sys-img-x86-android-21"]
 
 
-RUN addgroup -gid 1000 petru \
-    && adduser --uid 1000 --gid 1000 --disabled-password --gecos '' petru \
-    && adduser petru sudo \
+RUN addgroup -gid 1000 docker \
+    && adduser --uid 1000 --gid 1000 --disabled-password --gecos '' docker \
+    && adduser docker sudo \
     && echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers \
     && chown -R 1000:1000 $ANDROID_HOME
 
-RUN echo "alias ll='ls -la --color=auto'" >> /home/petru/.bashrc
-RUN echo "alias ..='cd ..'" >> /home/petru/.bashrc
+RUN echo "alias ll='ls -la --color=auto'" >> /home/docker/.bashrc
+RUN echo "alias ..='cd ..'" >> /home/docker/.bashrc
 
 WORKDIR ionic-demo
 CMD ["ionic", "serve"]
