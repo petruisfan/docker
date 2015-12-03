@@ -4,6 +4,7 @@ IONIC_VERSION='0.4'
 NODE_VERSION='4.1.2'
 RUBY_VERSION='1.0'
 NGINX_VERSION='1.9'
+MONGO_VERSION='0.1'
 
 function printHelp() {
     echo "How to use: ${0} <cmd>"
@@ -13,6 +14,7 @@ function printHelp() {
     echo "  nginx   - web server on premise"
     echo "  ionic   - ionic bash"
     echo "  is      - ionic server"
+    echo "  mongo   - mongo client"
 }
 
 case "$1" in
@@ -48,6 +50,14 @@ case "$1" in
             -w /code \
             --privileged -v /dev/bus/usb:/dev/bus/usb \
             petruisfan/ionic:$IONIC_VERSION
+        ;;
+    "mongo")
+        docker run -it --rm \
+            --name mongo-client \
+            -u=petru \
+            -v $(pwd):/code \
+            -w /code \
+            petruisfan/mongo-client:${MONGO_VERSION} bash
         ;;
     *)
         echo "error: No such command"
